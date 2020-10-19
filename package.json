@@ -1,0 +1,14 @@
+{
+  "name": "gatsby-theme-preventure-workspace",
+  "private": true,
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn workspace example build"
+  },
+  "workspaces": [
+    "gatsby-theme-preventure-docs",
+    "example"
+  ]
+}
