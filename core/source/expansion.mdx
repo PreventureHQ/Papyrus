@@ -1,0 +1,36 @@
+---
+title: Expansion panel
+date: 2019-01-29
+description: A page to test things
+---
+
+import {
+  ExpansionPanel,
+  ExpansionPanelList,
+  ExpansionPanelListItem
+} from 'gatsby-theme-preventure-docs';
+
+<ExpansionPanel title="How to use the ExpansionPanel component">
+
+Add a line break _between_ JSX tags and content to parse the content as *Markdown*
+
+<ExpansionPanelList>
+<ExpansionPanelListItem number="1">
+
+### h4 works well as a heading here
+
+- markdown
+- works
+- here
+
+</ExpansionPanelListItem>
+<ExpansionPanelListItem number="check">
+
+<h4>That's it!</h4>
+
+> MDX is super fun
+
+</ExpansionPanelListItem>
+</ExpansionPanelList>
+
+</ExpansionPanel>

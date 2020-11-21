@@ -1,0 +1,15 @@
+---
+title: Utilities
+description: Exposes a number of utility APIs for the consumer. APIs in this category are meant to assist with system processes and streamlining operations.
+---
+
+## Resumable file uploads
+
+Supply a name for the file to be uploaded and Preventure.live will return a corresponding upload url.
+
+A resumeable upload allows you to resume data transfer operations after a communication failure
+has interrupted the flow of data. Resumeable uploads work by sending multiple requests, each of
+which contains the portion of the data being uploaded. This is different from a simple upload,
+which contains all of the object's data in a single request and must be restrated from the begining
+if it fails part way through. Use a resumebale upload if you are uploading large files or uploading
+over a slow connection.

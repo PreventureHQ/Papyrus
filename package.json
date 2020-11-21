@@ -5,10 +5,14 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "yarn workspace example build"
+    "build": "yarn workspaces run build",
+    "develop": "yarn workspaces run develop",
+    "clean": "yarn workspaces run clean",
+    "serve": "yarn workspace core serve"
   },
   "workspaces": [
     "gatsby-theme-preventure-docs",
-    "example"
+    "core",
+    "mainboard"
   ]
 }

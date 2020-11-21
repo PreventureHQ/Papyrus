@@ -1,14 +1,14 @@
-import '../prism.less';
-import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
-import DocsetSwitcher from './docset-switcher';
-import Header from './header';
-import HeaderButton from './header-button';
-import PropTypes from 'prop-types';
-import React, {createContext, useMemo, useRef, useState} from 'react';
-import Search from './search';
-import styled from '@emotion/styled';
-import useLocalStorage from 'react-use/lib/useLocalStorage';
-import {Button} from '@apollo/space-kit/Button';
+import "../prism.less";
+import "prismjs/plugins/line-numbers/prism-line-numbers.css";
+import DocsetSwitcher from "./docset-switcher";
+import Header from "./header";
+import HeaderButton from "./header-button";
+import PropTypes from "prop-types";
+import React, { createContext, useMemo, useRef, useState } from "react";
+import Search from "./search";
+import styled from "@emotion/styled";
+import useLocalStorage from "react-use/lib/useLocalStorage";
+import { Button } from "@apollo/space-kit/Button";
 import {
   FlexWrapper,
   Layout,
@@ -17,92 +17,92 @@ import {
   SidebarNav,
   breakpoints,
   colors,
-  useResponsiveSidebar
-} from 'gatsby-theme-apollo-core';
-import {Helmet} from 'react-helmet';
-import {IconLayoutModule} from '@apollo/space-kit/icons/IconLayoutModule';
-import {Link, graphql, navigate, useStaticQuery} from 'gatsby';
-import {MobileLogo} from './mobile-logo';
-import {Select} from './select';
-import {SelectedLanguageContext} from './multi-code-block';
-import {getSpectrumUrl, getVersionBasePath} from '../utils';
-import {groupBy} from 'lodash';
-import {size} from 'polished';
-import {trackCustomEvent} from 'gatsby-plugin-google-analytics';
+  useResponsiveSidebar,
+} from "gatsby-theme-apollo-core";
+import { Helmet } from "react-helmet";
+import { IconLayoutModule } from "@apollo/space-kit/icons/IconLayoutModule";
+import { Link, graphql, navigate, useStaticQuery } from "gatsby";
+import { MobileLogo } from "./mobile-logo";
+import { Select } from "./select";
+import { SelectedLanguageContext } from "./multi-code-block";
+import { getSpectrumUrl, getVersionBasePath } from "../utils";
+import { groupBy } from "lodash";
+import { size } from "polished";
+import { trackCustomEvent } from "gatsby-plugin-google-analytics";
 
 const Main = styled.main({
-  flexGrow: 1
+  flexGrow: 1,
 });
 
 const ButtonWrapper = styled.div({
-  flexGrow: 1
+  flexGrow: 1,
 });
 
 const StyledButton = styled(Button)({
-  width: '100%',
-  ':not(:hover)': {
-    backgroundColor: colors.background
-  }
+  width: "100%",
+  ":not(:hover)": {
+    backgroundColor: colors.background,
+  },
 });
 
 const StyledIcon = styled(IconLayoutModule)(size(16), {
-  marginLeft: 'auto'
+  marginLeft: "auto",
 });
 
 const MobileNav = styled.div({
-  display: 'none',
+  display: "none",
   [breakpoints.md]: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     marginRight: 32,
-    color: colors.text1
-  }
+    color: colors.text1,
+  },
 });
 
 const HeaderInner = styled.span({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  marginBottom: 32
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  marginBottom: 32,
 });
 
 const Eyebrow = styled.div({
   flexShrink: 0,
-  padding: '8px 56px',
+  padding: "8px 56px",
   backgroundColor: colors.background,
   color: colors.primary,
   fontSize: 14,
-  position: 'sticky',
+  position: "sticky",
   top: 0,
   a: {
-    color: 'inherit',
-    fontWeight: 600
+    color: "inherit",
+    fontWeight: 600,
   },
   [breakpoints.md]: {
-    padding: '8px 24px'
-  }
+    padding: "8px 24px",
+  },
 });
 
 function getVersionLabel(version) {
   return `v${version}`;
 }
 
-const GA_EVENT_CATEGORY_SIDEBAR = 'Sidebar';
+const GA_EVENT_CATEGORY_SIDEBAR = "Sidebar";
 
 function handleToggleAll(expanded) {
   trackCustomEvent({
     category: GA_EVENT_CATEGORY_SIDEBAR,
-    action: 'Toggle all',
-    label: expanded ? 'expand' : 'collapse'
+    action: "Toggle all",
+    label: expanded ? "expand" : "collapse",
   });
 }
 
 function handleToggleCategory(label, expanded) {
   trackCustomEvent({
     category: GA_EVENT_CATEGORY_SIDEBAR,
-    action: 'Toggle category',
+    action: "Toggle category",
     label,
-    value: Number(expanded)
+    value: Number(expanded),
   });
 }
 
@@ -127,12 +127,12 @@ export default function PageLayout(props) {
     openSidebar,
     sidebarOpen,
     handleWrapperClick,
-    handleSidebarNavLinkClick
+    handleSidebarNavLinkClick,
   } = useResponsiveSidebar();
 
   const buttonRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const selectedLanguageState = useLocalStorage('docs-lang');
+  const selectedLanguageState = useLocalStorage("docs-lang");
 
   function openMenu() {
     setMenuOpen(true);
@@ -142,15 +142,15 @@ export default function PageLayout(props) {
     setMenuOpen(false);
   }
 
-  const {pathname} = props.location;
-  const {siteName, title} = data.site.siteMetadata;
+  const { pathname } = props.location;
+  const { siteName, title } = data.site.siteMetadata;
   const {
     subtitle,
     sidebarContents,
     versions,
     versionDifference,
     versionBasePath,
-    defaultVersion
+    defaultVersion,
   } = props.pageContext;
   const {
     spectrumHandle,
@@ -161,17 +161,17 @@ export default function PageLayout(props) {
     logoLink,
     algoliaApiKey,
     algoliaIndexName,
-    menuTitle
+    menuTitle,
   } = props.pluginOptions;
 
-  const {navItems, navCategories} = useMemo(() => {
+  const { navItems, navCategories } = useMemo(() => {
     const navItems = Object.entries(navConfig).map(([title, navItem]) => ({
       ...navItem,
-      title
+      title,
     }));
     return {
       navItems,
-      navCategories: Object.entries(groupBy(navItems, 'category'))
+      navCategories: Object.entries(groupBy(navItems, "category")),
     };
   }, [navConfig]);
 
@@ -183,7 +183,7 @@ export default function PageLayout(props) {
   return (
     <Layout>
       <Helmet
-        titleTemplate={['%s', subtitle, title].filter(Boolean).join(' - ')}
+        titleTemplate={["%s", subtitle, title].filter(Boolean).join(" - ")}
       >
         <link
           rel="stylesheet"
@@ -211,7 +211,7 @@ export default function PageLayout(props) {
                   color={colors.primary}
                   size="small"
                   onClick={openMenu}
-                  style={{display: 'flex'}}
+                  style={{ display: "flex" }}
                 >
                   {sidebarTitle}
                   <StyledIcon />
@@ -224,18 +224,18 @@ export default function PageLayout(props) {
               <Select
                 feel="flat"
                 size="small"
-                value={versionDifference ? versionBasePath : '/'}
+                value={versionDifference ? versionBasePath : "/"}
                 onChange={navigate}
-                style={{marginLeft: 8}}
+                style={{ marginLeft: 8 }}
                 options={versions.reduce(
                   (acc, version) => ({
                     ...acc,
-                    [getVersionBasePath(version)]: getVersionLabel(version)
+                    [getVersionBasePath(version)]: getVersionLabel(version),
                   }),
                   {
-                    '/': defaultVersion
+                    "/": defaultVersion
                       ? getVersionLabel(defaultVersion)
-                      : 'Latest'
+                      : "Latest",
                   }
                 )}
               />
@@ -256,10 +256,10 @@ export default function PageLayout(props) {
             beforeContent={
               versionDifference !== 0 && (
                 <Eyebrow>
-                  You&apos;re viewing documentation for a{' '}
+                  You&apos;re viewing documentation for a{" "}
                   {versionDifference > 0
-                    ? 'version of this software that is in development'
-                    : 'previous version of this software'}
+                    ? "version of this software that is in development"
+                    : "previous version of this software"}
                   . <Link to="/">Switch to the latest stable version</Link>
                 </Eyebrow>
               )
@@ -307,5 +307,5 @@ PageLayout.propTypes = {
   children: PropTypes.node.isRequired,
   location: PropTypes.object.isRequired,
   pageContext: PropTypes.object.isRequired,
-  pluginOptions: PropTypes.object.isRequired
+  pluginOptions: PropTypes.object.isRequired,
 };

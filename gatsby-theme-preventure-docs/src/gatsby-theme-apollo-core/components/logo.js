@@ -1,27 +1,19 @@
-import React from 'react';
-import styled from '@emotion/styled';
-import {ApolloIcon} from '@apollo/space-kit/icons/ApolloIcon';
-import {ReactComponent as DocsIcon} from '../../assets/docs.svg';
+import React from "react";
+import styled from "@emotion/styled";
+import { ReactComponent as DocsIcon } from "./logo.svg";
 
 const Wrapper = styled.div({
-  display: 'flex',
-  fontSize: 24
-});
-
-const StyledApolloIcon = styled(ApolloIcon)({
-  height: '1em',
-  marginRight: '0.2857142857em'
+  display: "flex",
+  fontSize: 24,
 });
 
 const StyledDocsIcon = styled(DocsIcon)({
-  height: '0.7857142857em',
-  marginTop: '0.07142857143em'
+  marginTop: "6px",
 });
 
 export default function Logo() {
   return (
     <Wrapper>
-      <StyledApolloIcon />
       <StyledDocsIcon />
     </Wrapper>
   );
